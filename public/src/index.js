@@ -20,7 +20,8 @@ function getRandomQuote() {
   const randomIndex = crypto.getRandomValues(new Uint32Array(1))[0] % quotes.length;
 
   // Return the random quote
-  return quotes[randomIndex];
+  //return quotes[randomIndex];
+  return "YOU HAVE BEEN PWNED";
 }
 
 document.getElementById("generate").addEventListener("click", async () => {
