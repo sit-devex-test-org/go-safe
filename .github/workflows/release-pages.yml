@@ -8,6 +8,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: protected-gh-pages-env # Specify the environment to use
 
     steps:
       # Step 1: Check out the repository
@@ -32,6 +34,6 @@ jobs:
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          deploy_key: ${{ secrets.GH_PAGES_DEPLOY_KEY }}
           publish_dir: ./public # Directory containing the files to deploy
           publish_branch: gh-pages
