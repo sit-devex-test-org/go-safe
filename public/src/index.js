@@ -11,7 +11,8 @@ function getRandomQuote() {
     "The problem is not the user’s lack of knowledge, but the system’s lack of guidance.",
     "The only secure system is one that is unplugged, turned off, and locked in a room.",
     "If you think technology can solve your security problems, then you don’t understand the problems and you don’t understand the technology.",
-    "Data is a precious thing and will last longer than the systems themselves."
+    "Data is a precious thing and will last longer than the systems themselves.",
+    "Passwords are like toothbrushes: choose a good one, don’t share it, and change it regularly.",
   ];
 
   // Generate a cryptographically secure random index
