@@ -13,6 +13,7 @@ function getRandomQuote() {
     "If you think technology can solve your security problems, then you don’t understand the problems and you don’t understand the technology.",
     "Data is a precious thing and will last longer than the systems themselves.",
     "Passwords are like toothbrushes: choose a good one, don’t share it, and change it regularly.",
+    "They told me to use a strong password, so I bench-pressed my keyboard.",
   ];
 
   // Generate a cryptographically secure random index
