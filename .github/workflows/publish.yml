@@ -53,7 +53,14 @@ jobs:
           VERSION: ${{ needs.conf.outputs.tag-version }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Show script
+      - name: Show package info
         run: |
           cat node_modules/@sit-devex-test-org/cowsays-be-safe/package.json
-          cat node_modules/@sit-devex-test-org/cowsays-be-safe/dist/bundle.js
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }} # Use the tag triggering the workflow
+          release_name: "Release ${{ github.ref_name }}"
+          assets: "node_modules/@sit-devex-test-org/cowsays-be-safe/dist/bundle.js"
