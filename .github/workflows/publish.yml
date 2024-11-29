@@ -13,26 +13,33 @@ jobs:
       packages: write
 
     steps:
-      # Step 1: Check out the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18" # Specify your Node.js version
           registry-url: "https://npm.pkg.github.com/"
 
-      # Step 3: Install dependencies
+      - name: Extract version from tag
+        id: extract_version
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+
+      - name: Update package.json version
+        run: |
+          npm version $VERSION --no-git-tag-version
+        env:
+          VERSION: ${{ env.VERSION }}
+
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Build the package
       - name: Build package
         run: npm run build
 
-      # Step 5: Publish to GitHub Packages
       - name: Publish to GitHub Packages
         run: npm publish
         env:
