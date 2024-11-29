@@ -13,6 +13,8 @@ on:
 jobs:
   create-tag:
     runs-on: ubuntu-latest
+    environment:
+      name: protected-gh-pages-env # Specify the environment to use
 
     steps:
       - name: Checkout Code
