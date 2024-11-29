@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: protected-gh-pages-env # Specify the environment to use
+    permissions:
+      packages: read
 
     steps:
       # Step 1: Check out the repository
@@ -27,6 +29,17 @@ jobs:
 
       - name: Build project
         run: npm run build
+
+      - name: Install published package
+        run: npm install @sit-devex-test-org/cowsays-be-safe --registry=https://npm.pkg.github.com
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Copy latest package
+        run: |
+          cat node_modules/@sit-devex-test-org/cowsays-be-safe/package.json
+          cp node_modules/@sit-devex-test-org/cowsays-be-safe/package.json ./public
+          cp node_modules/@sit-devex-test-org/cowsays-be-safe/dist/bundle.js ./public
 
       # Step 3: Deploy to gh-pages branch
       - name: Deploy to gh-pages
