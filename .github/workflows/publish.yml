@@ -28,3 +28,28 @@ jobs:
     secrets: inherit
     with:
       version: ${{ needs.conf.outputs.tag-version }}
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [conf, publish-package]
+    permissions:
+      contents: write
+      packages: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install published package
+        run: npm install @sit-devex-test-org/cowsays-be-safe@${VERSION} --registry=https://npm.pkg.github.com
+        env:
+          VERSION: ${{ needs.conf.outputs.tag-version }}
+
+      - name: Show script
+        run: |
+          cat node_modules/@sit-devex-test-org/cowsays-be-safe/package.json
+          cat node_modules/@sit-devex-test-org/cowsays-be-safe/dist/bundle.js
