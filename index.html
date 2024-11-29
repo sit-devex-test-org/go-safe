@@ -80,35 +80,14 @@
 
   <pre id="cowsayOutput"></pre>
   <script>
-    (async () => {
-      const repo = 'sit-devex-test-org/go-safe'; // Replace with your repo
-      const apiUrl = `https://api.github.com/repos/${repo}/releases/latest`;
-
-      try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-
-        // Extract the release version
-        const releaseVersion = data.tag_name || 'unknown version';
-
-        // Update the button text to include the release version
-        const button = document.getElementById('generate');
-        button.textContent = `Generate Cowsay (${releaseVersion})`;
-
-        // Find and load the asset (e.g., bundle.js)
-        const asset = data.assets.find(a => a.name === 'bundle.js');
-        if (asset) {
-          const script = document.createElement('script');
-          script.src = asset.browser_download_url;
-          document.body.appendChild(script);
-        } else {
-          console.error('Asset not found');
-        }
-      } catch (error) {
-        console.error('Error fetching the latest release:', error);
-      }
-    })();
+    const response = await fetch('./package.json');
+    const packageJson = await response.json();
+    const version = packageJson.version;
+    // Update the button text to include the release version
+    const button = document.getElementById('generate');
+    button.textContent = `Generate Cowsay (${releaseVersion})`;
   </script>
+  <script src="./bundle.js"></script>
 </body>
 
 </html>
