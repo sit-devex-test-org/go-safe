@@ -42,5 +42,6 @@ jobs:
   deploy:
     uses: ./.github/workflows/.deploy.yml
     needs: [release]
-    permissions: {}
+    permissions:
+      packages: read
     secrets: inherit
