@@ -10,6 +10,5 @@ permissions: {}
 jobs:
   deploy:
     uses: ./.github/workflows/.deploy.yml
-    needs: [conf, publish-package, release]
     permissions: {}
     secrets: inherit
