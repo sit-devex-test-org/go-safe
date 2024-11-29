@@ -61,6 +61,4 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref_name }} # Use the tag triggering the workflow
-          release_name: "Release ${{ github.ref_name }}"
-          assets: "node_modules/@sit-devex-test-org/cowsays-be-safe/dist/bundle.js"
+          artifacts: "node_modules/@sit-devex-test-org/cowsays-be-safe/dist/bundle.js"
