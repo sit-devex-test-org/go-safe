@@ -80,12 +80,14 @@
 
   <pre id="cowsayOutput"></pre>
   <script>
-    const response = await fetch('./package.json');
-    const packageJson = await response.json();
-    const version = packageJson.version;
-    // Update the button text to include the release version
-    const button = document.getElementById('generate');
-    button.textContent = `Generate Cowsay (${releaseVersion})`;
+    (async () => {
+      const response = await fetch('./package.json');
+      const packageJson = await response.json();
+      const version = packageJson.version;
+      // Update the button text to include the release version
+      const button = document.getElementById('generate');
+      button.textContent = `Generate Cowsay (${releaseVersion})`;
+    })();
   </script>
   <script src="./bundle.js"></script>
 </body>
