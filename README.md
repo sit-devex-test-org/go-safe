@@ -2,8 +2,9 @@
 
 ## Assets
 
-* <https://sit-devex-test-org.github.io/go-safe/> (from `gh-pages` branch)
-* secrets.MASTERKEY
+* `gh-pages` branch: <https://sit-devex-test-org.github.io/go-safe/>
+* Master key (repo write): `secrets.MASTERKEY`
+* npm package: <https://github.com/sit-devex-test-org/go-safe/pkgs/npm/cowsays-be-safe>
 
 ## Protection
 
