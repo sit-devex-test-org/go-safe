@@ -48,6 +48,7 @@ jobs:
         run: npm install @sit-devex-test-org/cowsays-be-safe@${VERSION} --registry=https://npm.pkg.github.com
         env:
           VERSION: ${{ needs.conf.outputs.tag-version }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Show script
         run: |
