@@ -52,7 +52,28 @@
 <body>
   <button id="generate">Generate Cowsay</button>
   <pre id="cowsayOutput"></pre>
-  <script src="./dist/bundle.js"></script>
+  <script>
+    (async () => {
+      const repo = 'sit-devex-test-org/go-safe'; // Replace with your repo
+      const apiUrl = `https://api.github.com/repos/${repo}/releases/latest`;
+
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        const asset = data.assets.find(a => a.name === 'bundle.js');
+
+        if (asset) {
+          const script = document.createElement('script');
+          script.src = asset.browser_download_url;
+          document.body.appendChild(script);
+        } else {
+          console.error('Asset not found');
+        }
+      } catch (error) {
+        console.error('Error fetching the latest release:', error);
+      }
+    })();
+  </script>
 </body>
 
 </html>
