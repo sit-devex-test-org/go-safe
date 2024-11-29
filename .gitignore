@@ -27,3 +27,6 @@ go.work.sum
 # js
 dist/
 node_modules/
+
+# MASTERKEY
+MASTERKEY*
