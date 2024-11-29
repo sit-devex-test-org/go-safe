@@ -30,6 +30,11 @@ jobs:
           ssh-keyscan -H github.com >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
+      - name: Force Git to Use SSH
+        run: |
+          git remote set-url origin git@github.com:${GITHUB_REPOSITORY}.git
+          git remote -v
+
       - name: Determine Default Branch
         id: default_branch
         run: |
