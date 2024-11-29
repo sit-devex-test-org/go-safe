@@ -44,6 +44,9 @@ jobs:
         with:
           node-version: "18"
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Install published package
         run: npm install @sit-devex-test-org/cowsays-be-safe@${VERSION} --registry=https://npm.pkg.github.com
         env:
