@@ -1,0 +1,43 @@
+name: publish package
+
+permissions: {}
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: "version to be used"
+        type: string
+
+jobs:
+  build-and-publish-package:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18" # Specify your Node.js version
+          registry-url: "https://npm.pkg.github.com/"
+
+      - name: Update package.json version
+        run: |
+          npm version $VERSION --no-git-tag-version
+        env:
+          VERSION: ${{ inputs.version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build package
+        run: npm run build
+
+      - name: Publish to GitHub Packages
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -5,42 +5,26 @@ on:
     tags:
       - "v*"
 
+permissions: {}
+
 jobs:
-  build-and-publish:
+  conf:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      packages: write
-
+    outputs:
+      tag-version: ${{ steps.extract_version.outputs.VERSION }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18" # Specify your Node.js version
-          registry-url: "https://npm.pkg.github.com/"
-
       - name: Extract version from tag
         id: extract_version
         run: |
           TAG=${GITHUB_REF#refs/tags/}
-          echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+          echo "VERSION=${TAG#v}" >> ${GITHUB_OUTPUT}
 
-      - name: Update package.json version
-        run: |
-          npm version $VERSION --no-git-tag-version
-        env:
-          VERSION: ${{ env.VERSION }}
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build package
-        run: npm run build
-
-      - name: Publish to GitHub Packages
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  publish-package:
+    uses: ./.github/workflows/.publish.yml
+    needs: conf
+    permissions:
+      packages: write
+      contents: write
+    secrets: inherit
+    with:
+      version: ${{ needs.conf.outputs.tag-version }}
