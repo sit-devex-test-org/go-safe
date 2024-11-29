@@ -10,15 +10,38 @@ on:
         description: "Commit hash to tag (default is latest commit on the default branch)"
         required: false
 
-env:
-  environment: protected-gh-pages-env
-
 jobs:
   create-tag:
     runs-on: ubuntu-latest
     environment: protected-gh-pages-env
 
     steps:
+      - name: Check if user is a collaborator with maintainer access
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Extract the triggering user
+          TRIGGERING_USER="${{ github.event.sender.login }}"
+          REPO="${{ github.repository }}"
+
+          echo "Checking permissions for user: $TRIGGERING_USER on repository: $REPO"
+
+          # Use GitHub API to check user's role
+          RESPONSE=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/$REPO/collaborators/$TRIGGERING_USER/permission")
+
+          echo "Response: $RESPONSE"
+
+          # Extract permission from the response
+          PERMISSION=$(echo "$RESPONSE" | jq -r '.permission')
+
+          if [[ "$PERMISSION" == "admin" || "$PERMISSION" == "maintain" ]]; then
+            echo "User $TRIGGERING_USER has sufficient permissions ($PERMISSION). Proceeding..."
+          else
+            echo "User $TRIGGERING_USER does not have sufficient permissions ($PERMISSION)."
+            exit 1
+          fi
       - name: Checkout Code
         uses: actions/checkout@v3
         with:
