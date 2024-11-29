@@ -1,34 +1,15 @@
-name: Publish to GitHub Packages
-
-on:
-  push:
-    tags:
-      - "v*"
+name: GitHub release
 
 permissions: {}
 
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: "version to be used"
+        type: string
+
 jobs:
-  conf:
-    runs-on: ubuntu-latest
-    outputs:
-      tag-version: ${{ steps.extract_version.outputs.VERSION }}
-    steps:
-      - name: Extract version from tag
-        id: extract_version
-        run: |
-          TAG=${GITHUB_REF#refs/tags/}
-          echo "VERSION=${TAG#v}" >> ${GITHUB_OUTPUT}
-
-  publish-package:
-    uses: ./.github/workflows/.publish.yml
-    needs: conf
-    permissions:
-      packages: write
-      contents: write
-    secrets: inherit
-    with:
-      version: ${{ needs.conf.outputs.tag-version }}
-
   release:
     runs-on: ubuntu-latest
     needs: [conf, publish-package]
@@ -50,7 +31,7 @@ jobs:
       - name: Install published package
         run: npm install @sit-devex-test-org/cowsays-be-safe@${VERSION} --registry=https://npm.pkg.github.com
         env:
-          VERSION: ${{ needs.conf.outputs.tag-version }}
+          VERSION: ${{ inputs.version }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Show package info

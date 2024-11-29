@@ -1,0 +1,46 @@
+name: Tag release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions: {}
+
+jobs:
+  conf:
+    runs-on: ubuntu-latest
+    outputs:
+      tag-version: ${{ steps.extract_version.outputs.VERSION }}
+    steps:
+      - name: Extract version from tag
+        id: extract_version
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          echo "VERSION=${TAG#v}" >> ${GITHUB_OUTPUT}
+
+  publish-package:
+    uses: ./.github/workflows/.publish.yml
+    needs: conf
+    permissions:
+      packages: write
+      contents: write
+    secrets: inherit
+    with:
+      version: ${{ needs.conf.outputs.tag-version }}
+
+  release:
+    uses: ./.github/workflows/.release.yml
+    needs: [conf, publish-package]
+    permissions:
+      contents: write
+      packages: read
+    secrets: inherit
+    with:
+      version: ${{ needs.conf.outputs.tag-version }}
+
+  deploy:
+    uses: ./.github/workflows/.deploy.yml
+    needs: [conf, publish-package, release]
+    permissions: {}
+    secrets: inherit
