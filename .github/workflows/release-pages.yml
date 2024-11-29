@@ -20,7 +20,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "18"
 
       - name: Install dependencies
         working-directory: public
@@ -28,7 +28,7 @@ jobs:
 
       - name: Build project
         working-directory: public
-        run: npx webpack
+        run: npm run build
 
       # Step 3: Deploy to gh-pages branch
       - name: Deploy to gh-pages
