@@ -10,11 +10,13 @@ on:
         description: "Commit hash to tag (default is latest commit on the default branch)"
         required: false
 
+env:
+  environment: protected-gh-pages-env
+
 jobs:
   create-tag:
     runs-on: ubuntu-latest
-    environment:
-      name: protected-gh-pages-env # Specify the environment to use
+    environment: protected-gh-pages-env
 
     steps:
       - name: Checkout Code
