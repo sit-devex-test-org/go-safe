@@ -1,0 +1,84 @@
+name: Trigger release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Tag version (e.g., v1.0.0)"
+        required: true
+      commit:
+        description: "Commit hash to tag (default is latest commit on the default branch)"
+        required: false
+
+jobs:
+  create-tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Determine Default Branch
+        id: default_branch
+        run: |
+          DEFAULT_BRANCH=$(git remote show origin | awk '/HEAD branch/ {print $NF}')
+          echo "default_branch=$DEFAULT_BRANCH" >> $GITHUB_ENV
+
+      - name: Validate Tag and Commit
+        id: validate
+        run: |
+          TAG_NAME="${{ inputs.tag_name }}"
+          COMMIT="${{ inputs.commit }}"
+          DEFAULT_BRANCH="${{ env.default_branch }}"
+
+          # Ensure tag format is valid
+          if [[ ! "$TAG_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid tag format: $TAG_NAME"
+            echo "Expected format: v<major>.<minor>.<patch> (e.g., v1.0.0)"
+            exit 1
+          fi
+
+          # Check if the tag already exists
+          if git rev-parse --verify --quiet "refs/tags/$TAG_NAME"; then
+            echo "Tag $TAG_NAME already exists!"
+            exit 1
+          fi
+
+          # Determine commit hash (default to HEAD of the default branch)
+          if [ -z "$COMMIT" ]; then
+            COMMIT=$(git rev-parse "origin/$DEFAULT_BRANCH")
+            echo "No commit specified. Defaulting to the latest commit on $DEFAULT_BRANCH: $COMMIT"
+          else
+            # Check if the specified commit exists
+            if ! git cat-file -e "$COMMIT^{commit}"; then
+              echo "Specified commit $COMMIT does not exist!"
+              exit 1
+            fi
+
+            # Ensure the commit is on the default branch
+            if ! git merge-base --is-ancestor "$COMMIT" "origin/$DEFAULT_BRANCH"; then
+              echo "Specified commit $COMMIT is not part of the default branch ($DEFAULT_BRANCH)!"
+              exit 1
+            fi
+
+            echo "Validated commit: $COMMIT is part of $DEFAULT_BRANCH."
+          fi
+
+          # Output the validated tag name and commit hash
+          echo "tag_name=$TAG_NAME" >> $GITHUB_ENV
+          echo "commit_hash=$COMMIT" >> $GITHUB_ENV
+
+      - name: Create and Push Tag
+        if: ${{ success() }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAGES_DEPLOY_KEY }}
+        run: |
+          # Use validated tag name and commit hash
+          git tag ${{ env.tag_name }} ${{ env.commit_hash }}
+
+          # Push the tag to the remote repository
+          git push origin ${{ env.tag_name }}
+
+      - name: Confirm Tag Creation
+        if: ${{ success() }}
+        run: echo "Tag ${{ env.tag_name }} created for commit ${{ env.commit_hash }} and pushed successfully!"
