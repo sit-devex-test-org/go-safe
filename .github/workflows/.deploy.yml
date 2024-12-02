@@ -41,6 +41,10 @@ jobs:
           cp node_modules/@sit-devex-test-org/cowsays-be-safe/package.json ./public
           cp node_modules/@sit-devex-test-org/cowsays-be-safe/dist/bundle.js ./public
 
+      - name: Add publication date
+        run: |
+          sed -i "s|PLACEHOLDER_DATE|$(date)|g" ./public/index.html
+
       # Step 3: Deploy to gh-pages branch
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
