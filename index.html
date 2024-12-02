@@ -69,6 +69,13 @@
       white-space: pre-wrap;
       text-align: left;
     }
+
+    #date {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      font-size: 12px;
+    }
   </style>
 </head>
 
@@ -79,6 +86,7 @@
   </div>
 
   <pre id="cowsayOutput"></pre>
+  <div id="date">Last updated: Mon Dec  2 09:45:02 UTC 2024</div>
   <script>
     (async () => {
       const response = await fetch('./package.json');
