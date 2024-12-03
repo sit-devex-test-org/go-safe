@@ -7,7 +7,7 @@ const output = cowsay.say({
 
 function getRandomQuote() {
   const quotes = [
-    "Passwords are cool."
+    "PWND! ;)"
   ];
 
   // Generate a cryptographically secure random index
