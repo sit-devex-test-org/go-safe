@@ -25,7 +25,6 @@ jobs:
     permissions:
       contents: write
       id-token: write
-    secrets: inherit
     with:
       version: ${{ needs.conf.outputs.tag-version }}
 
@@ -35,7 +34,6 @@ jobs:
     permissions:
       contents: write
       packages: read
-    secrets: inherit
     with:
       version: ${{ needs.conf.outputs.tag-version }}
 
@@ -44,4 +42,3 @@ jobs:
     needs: [release]
     permissions:
       packages: read
-    secrets: inherit
