@@ -12,9 +12,10 @@ on:
 jobs:
   build-and-publish-package:
     runs-on: ubuntu-latest
+    environment:
+      name: PROTECTED-ENV # Specify the environment to use
     permissions:
       contents: write
-      packages: write
       id-token: write
     steps:
       - name: Checkout code
@@ -41,4 +42,4 @@ jobs:
       - name: Publish to GitHub Packages
         run: npm publish --provenance --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_PAT }}

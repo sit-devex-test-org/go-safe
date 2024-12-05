@@ -23,7 +23,6 @@ jobs:
     uses: ./.github/workflows/.publish.yml
     needs: conf
     permissions:
-      packages: write
       contents: write
       id-token: write
     secrets: inherit
