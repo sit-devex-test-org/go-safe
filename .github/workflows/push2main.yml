@@ -12,3 +12,4 @@ jobs:
     uses: ./.github/workflows/.deploy.yml
     permissions:
       packages: read
+    secrets: inherit
