@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
 
-jobs:
+jobs: # the below jobs are unintentional choices just to have something
   trivy:
     runs-on: ubuntu-latest
     steps:
