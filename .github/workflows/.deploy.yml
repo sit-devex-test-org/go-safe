@@ -9,7 +9,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment:
-      name: protected-gh-pages-env # Specify the environment to use
+      name: PROTECTED-ENV # Specify the environment to use
     permissions:
       packages: read
 

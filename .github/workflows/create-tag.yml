@@ -13,7 +13,7 @@ on:
 jobs:
   create-tag:
     runs-on: ubuntu-latest
-    environment: protected-gh-pages-env
+    environment: PROTECTED-ENV
 
     steps:
       - name: Check if user is a collaborator with maintainer access
