@@ -1,6 +1,6 @@
 {
   "name": "@sit-devex-test-org/cowsays-be-safe",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "description": "Cow makes insightful statements about security.",
   "main": "dist/bundle.js",
   "keywords": [],
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sit-devex-test-org/go-safe.git"
+    "url": "https://github.com/sit-devex-test-org/unh4ckable-cow.git"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
