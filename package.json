@@ -1,6 +1,6 @@
 {
   "name": "@sit-devex-test-org/cowsays-be-safe",
-  "version": "1.0.39",
+  "version": "1.0.40",
   "description": "Cow makes insightful statements about security.",
   "main": "dist/bundle.js",
   "keywords": [],
