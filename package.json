@@ -1,6 +1,6 @@
 {
   "name": "@sit-devex-test-org/cowsays-be-safe",
-  "version": "1.0.40",
+  "version": "1.0.41",
   "description": "Cow makes insightful statements about security.",
   "main": "dist/bundle.js",
   "keywords": [],
@@ -25,7 +25,7 @@
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
     "babel-loader": "^9.2.1",
-    "webpack": "^5.96.1",
+    "webpack": "^5.97.1",
     "webpack-cli": "^5.1.4"
   }
 }
