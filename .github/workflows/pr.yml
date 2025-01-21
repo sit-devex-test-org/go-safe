@@ -10,6 +10,13 @@ jobs: # the below jobs are unintentional choices just to have something
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: emit infos
+        run: |
+          echo "head repo: " + $HEAD_NAME
+          echo "repo: " + $REPO_NAME
+        env:
+          HEAD_NAME: ${{github.event.pull_request.head.repo.full_name }}
+          REPO_NAME: ${{ github.repository }}
       - name: Run Trivy vulnerability scanner in repo mode
         uses: aquasecurity/trivy-action@0.29.0
         with:
