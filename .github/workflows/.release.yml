@@ -1,4 +1,4 @@
-name: GitHub release
+name: Create GitHub release
 
 permissions: {}
 
@@ -18,25 +18,20 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-
       - name: Install dependencies
-        run: npm install
-
+        run: npm ci
       - name: Install published package
         run: npm install @sit-devex-test-org/cowsays-be-safe@${VERSION} --registry=https://npm.pkg.github.com
         env:
           VERSION: ${{ inputs.version }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Show package info
         run: |
           cat node_modules/@sit-devex-test-org/cowsays-be-safe/package.json
-
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:

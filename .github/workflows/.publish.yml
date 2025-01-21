@@ -12,32 +12,29 @@ on:
 jobs:
   build-and-publish-package:
     runs-on: ubuntu-latest
+    environment:
+      name: PROTECTED-ENV # Specify the environment to use
     permissions:
       contents: write
-      packages: write
+      id-token: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18" # Specify your Node.js version
+          node-version: "18"
           registry-url: "https://npm.pkg.github.com/"
-
       - name: Update package.json version
         run: |
           npm version $VERSION --no-git-tag-version
         env:
           VERSION: ${{ inputs.version }}
-
       - name: Install dependencies
-        run: npm install
-
+        run: npm ci
       - name: Build package
         run: npm run build
-
       - name: Publish to GitHub Packages
-        run: npm publish
+        run: npm publish --provenance --access public # Publishing protected package
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_PAT }}

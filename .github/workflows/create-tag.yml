@@ -10,10 +10,10 @@ on:
         description: "Commit hash to tag (default is latest commit on the default branch)"
         required: false
 
-jobs:
+jobs: # this should ideally be a single monolithic maintained action
   create-tag:
     runs-on: ubuntu-latest
-    environment: protected-gh-pages-env
+    environment: PROTECTED-ENV
 
     steps:
       - name: Check if user is a collaborator with maintainer access
