@@ -4,9 +4,14 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: write
+
 jobs: # the below jobs are unintentional choices just to have something
   trivy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
